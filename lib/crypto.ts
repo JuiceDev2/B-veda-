@@ -1,18 +1,6 @@
 /**
  * Cifrado zero-knowledge en el navegador.
- *
- * Nada de esto viaja al servidor: la contraseña maestra nunca sale del
- * dispositivo. Lo que se guarda en Supabase son únicamente los bytes
- * cifrados (ciphertext) + el salt + el iv de cada registro.
- *
- * Flujo:
- *  1. deriveMasterKey(contraseñaMaestra, saltDeUsuario) -> CryptoKey (PBKDF2 -> AES-GCM 256)
- *  2. encryptField(key, texto) -> { ciphertext, iv } listos para guardar en la fila
- *  3. decryptField(key, ciphertext, iv) -> texto original
- *
- * El salt del usuario se genera una vez al crear la cuenta y se guarda
- * en la tabla `profiles` (no es secreto, solo previene ataques con
- * tablas rainbow).
+ * Corrección: TypeScript + BufferSource compatibility.
  */
 
 const PBKDF2_ITERATIONS = 210_000;
@@ -46,7 +34,7 @@ export async function deriveMasterKey(
   return crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: fromBase64(saltB64),
+      salt: fromBase64(saltB64) as BufferSource,
       iterations: PBKDF2_ITERATIONS,
       hash: "SHA-256",
     },
@@ -68,7 +56,10 @@ export async function encryptField(
     key,
     enc.encode(plaintext)
   );
-  return { ciphertext: toBase64(cipherBuf), iv: toBase64(iv.buffer) };
+  return { 
+    ciphertext: toBase64(cipherBuf), 
+    iv: toBase64(iv.buffer) 
+  };
 }
 
 export async function decryptField(
@@ -77,25 +68,27 @@ export async function decryptField(
   ivB64: string
 ): Promise<string> {
   const plainBuf = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv: fromBase64(ivB64) },
+    { 
+      name: "AES-GCM", 
+      iv: fromBase64(ivB64) as BufferSource 
+    },
     key,
-    fromBase64(ciphertextB64)
+    fromBase64(ciphertextB64) as BufferSource
   );
   return new TextDecoder().decode(plainBuf);
 }
 
-/**
- * Exporta la llave derivada como bytes crudos para poder envolverla
- * con el PIN (ver pin.ts) y guardarla localmente cifrada.
- */
 export async function exportKeyRaw(key: CryptoKey): Promise<string> {
   const raw = await crypto.subtle.exportKey("raw", key);
   return toBase64(raw);
 }
 
 export async function importKeyRaw(rawB64: string): Promise<CryptoKey> {
-  return crypto.subtle.importKey("raw", fromBase64(rawB64), "AES-GCM", true, [
-    "encrypt",
-    "decrypt",
-  ]);
+  return crypto.subtle.importKey(
+    "raw", 
+    fromBase64(rawB64) as BufferSource, 
+    "AES-GCM", 
+    true, 
+    ["encrypt", "decrypt"]
+  );
 }

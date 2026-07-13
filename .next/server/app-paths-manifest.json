@@ -1,0 +1,9 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/claves/page": "app/dashboard/claves/page.js",
+  "/dashboard/configuracion/page": "app/dashboard/configuracion/page.js",
+  "/dashboard/credenciales/page": "app/dashboard/credenciales/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js"
+}
