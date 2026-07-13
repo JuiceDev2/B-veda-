@@ -1,0 +1,31 @@
+# Dependencias
+node_modules/
+vendor/
+.pip/
+
+# Archivos de entorno y secretos
+.env
+.env.local
+*.pem
+*.key
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Carpetas de compilación/output
+dist/
+build/
+out/
+*.log
+
+# IDEs
+.vscode/
+.idea/   
+
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+*.log   
