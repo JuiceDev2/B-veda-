@@ -4,6 +4,7 @@
   "/dashboard/claves/page": "app/dashboard/claves/page.js",
   "/dashboard/configuracion/page": "app/dashboard/configuracion/page.js",
   "/dashboard/credenciales/page": "app/dashboard/credenciales/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js"
 }

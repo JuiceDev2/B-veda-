@@ -4,6 +4,7 @@
   "/dashboard/claves/page": "/dashboard/claves",
   "/dashboard/configuracion/page": "/dashboard/configuracion",
   "/dashboard/credenciales/page": "/dashboard/credenciales",
+  "/dashboard/page": "/dashboard",
   "/login/page": "/login",
   "/page": "/"
 }

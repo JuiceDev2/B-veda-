@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase";  // ← Corregido
 import { getVaultKey } from "@/lib/vault-key-store";
 import { encryptField, decryptField } from "@/lib/crypto";
 
@@ -17,7 +17,8 @@ type ProjectKeys = {
 };
 
 export default function ClavesPage() {
-  const supabase = createClient();
+  const supabase = createClient();   // ← Se crea aquí
+
   const [items, setItems] = useState<ProjectKeys[]>([]);
   const [revealed, setRevealed] = useState<Record<string, Record<string, string>>>({});
 
